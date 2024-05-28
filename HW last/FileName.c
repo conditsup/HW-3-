@@ -792,16 +792,17 @@ void printPatternWithCharactersTHIRD(int length, int cPos, int stage, int bite, 
         }
         else if (i == kPos2 || i == kPos1 || i == kPos) {
             if (stage == 3) {
-                if (i == kPos2 && bite <= 3) printf("C");
-                else if (i == kPos1 && bite <= 2) printf("C");
-                else if (i == kPos && bite <= 1) printf("C");
+                if (bite == 0) printf("C");
+                else if (bite == 1 && i != cPos) printf("C");
+                else if (bite == 2 && (i != cPos && i != kPos)) printf("C");
+                else if (bite == 3 && (i != cPos && i != kPos && i != kPos1)) printf("C");
                 else printf(" ");
             }
             else if (stage == 4) {
-                if (i == kPos2 && bite <= 3) printf("C");
-                else if (i == kPos1 && bite <= 2) printf("C");
-                else if (i == kPos && bite == 0) printf("C");
-                else if (i == kPos && bite >= 1 && bite <= 2) printf("Z");
+                if (bite <= 2 && i == kPos2) printf("C");
+                else if (bite <= 2 && i == kPos1) printf("C");
+                else if (bite == 0 && i == kPos) printf("C");
+                else if (bite >= 1 && bite <= 2 && i == kPos) printf("Z");
                 else printf(" ");
             }
         }
@@ -863,6 +864,11 @@ void initializeGameTHIRD() {
 
 }
 
+
+
+
+
+
 void CitizenBite() {
 
     if (cPosition == 1) {
@@ -912,7 +918,7 @@ void CitizenBite() {
 
                     bite = 2;
                     people--;
-
+                    success--;
                     //좀비 성공
                 }
             }
@@ -924,7 +930,7 @@ void CitizenBite() {
 
                     bite = 2;
                     people--;
-                   
+                    success--;
                 }
             }
         }
@@ -939,7 +945,7 @@ void CitizenBite() {
 
                     bite = 3;
                     people--;
-                  
+                    success--;
                 }
             }
             else if (stage == 4) {
@@ -949,7 +955,7 @@ void CitizenBite() {
 
                     bite = 3;
                     success--;
-                 
+                    success--;
                 }
             }
         }
@@ -1009,9 +1015,7 @@ void printCActionResult() {
         else {
             printPatternWithCharactersTHIRD(LEN, cPosition, 4, 0, zPosition, mPosition, kPosition, kPosition1, kPosition2);
             printf("SUCCESS!\ncitizen(s) escaped to the next traintrain\n");
-          
         }
-
     }
     else {
         if (stage == 1) {
@@ -1175,36 +1179,30 @@ void stage2() {
 
 // stage3: 세 번째 스테이지를 처리하는 함수
 void stage3() {
-    initializeGameTHIRD(LEN, cPosition, 3, 0, zPosition, mPosition, kPosition, kPosition1, kPosition2);
-    changec = 1;
     CitizenBite();
+    changec = 1;
     people = 4;
     bite = 0;
     success = 4;
     changec = 1;
     stage = 3;
-
+    initializeGameTHIRD(LEN, cPosition, 3, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
     // 세 번째 스테이지의 처리를 위한 코드 작성
     while (1) {
-     
         moveCitizen();
         moveZombie();
-        printPatternWithCharactersTHIRD(LEN, cPosition, 3, 0, zPosition, mPosition, kPosition, kPosition1, kPosition2);
+        printPatternWithCharactersTHIRD(LEN, cPosition, 3, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
         printCitizenMoveResult(prevCPosition);
         printZombieMoveResult(prevZPosition);
         CitizenBite();
         printf("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@           %d = bite\n\n", bite);
         printf("\n");
-
         //<이동>페이즈 결과
         moveM();
-        printPatternWithCharactersTHIRD(LEN, cPosition, 3, 0, zPosition, mPosition, kPosition, kPosition1, kPosition2);
-
+        printPatternWithCharactersTHIRD(LEN, cPosition, 3, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
         printMMoveResult();
         printf("\n");
-
         //<행동>페이즈 
-
         performCAction();
         performZAction();
         //<행동>페이즈 결과
@@ -1219,7 +1217,6 @@ void stage3() {
             printf("all citizens(s) dead...!\n\n");
             exit(0);
         }
-
         if (success == 0) {
             printf("Stage 3 Clear!\n\n");
         
@@ -1231,45 +1228,39 @@ void stage3() {
         zTurnCount++;
     }
 }
-
 // stage4: 네 번째 스테이지를 처리하는 함수
 void stage4() {
-    changec = 1;
     CitizenBite();
+    changec = 1;
     people = 4;
     bite = 0;
     success = 4;
     changec = 1;
-    stage = 4;
-    initializeGameTHIRD(LEN, cPosition, 4, 0, zPosition, mPosition, kPosition, kPosition1, kPosition2);
-
+    stage = 3;
+    initializeGameTHIRD(LEN, cPosition, 4, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
     // 세 번째 스테이지의 처리를 위한 코드 작성
     while (1) {
-
         moveCitizen();
         moveZombie();
-        printPatternWithCharactersTHIRD(LEN, cPosition, 4, 0, zPosition, mPosition, kPosition, kPosition1, kPosition2);
+        printPatternWithCharactersTHIRD(LEN, cPosition, 4, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
         printCitizenMoveResult(prevCPosition);
         printZombieMoveResult(prevZPosition);
         CitizenBite();
-        printf("\n");
         printf("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@           %d = bite\n\n", bite);
+        printf("\n");
         //<이동>페이즈 결과
         moveM();
-
-        printPatternWithCharactersTHIRD(LEN, cPosition, 4, 0, zPosition, mPosition, kPosition, kPosition1, kPosition2);
+        printPatternWithCharactersTHIRD(LEN, cPosition, 4, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
         printMMoveResult();
         printf("\n");
-
         //<행동>페이즈 
-
         performCAction();
         performZAction();
         //<행동>페이즈 결과
         printCActionResult();
         printZActionResult();
+        printf("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@           %d = bite\n\n", bite);
         CitizenBite();
-        printf("\n\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@          %d = bite\n\n", bite);
         printf("%d citizen(s) alive(s)\n\n", people);
         // 게임 종료 조건 확인
         if (bite == 4)
@@ -1277,7 +1268,6 @@ void stage4() {
             printf("all citizens(s) dead...!\n\n");
             exit(0);
         }
-
         if (success == 0) {
             printf("Stage 4 Clear!\n\n");
             exit(0);
@@ -1292,10 +1282,10 @@ void stage4() {
 // 메인 함수
 int main(void) {
     srand((unsigned int)time(NULL));
-    stage1(); // 첫 번째 스테이지 실행
-    //stage2(); // 두 번째 스테이지 실행
-    stage3(); // 세 번째 스테이지 실행
-    stage4(); // 네 번째 스테이지 실행
+    stage1();
+    //stage2();
+    stage3(); 
+    stage4();
     return 0;
 }
 
