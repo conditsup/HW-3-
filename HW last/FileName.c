@@ -1,3 +1,11 @@
+// 3 - 1 전부
+// 3 - 2 빌런 추가 및 <이동> <행동> 조건 / 전부 구현
+// 3 - 3 시민 위치 랜덤, 인원 표시, 좀비 물릴경우 삭제, 탈출 및 성공 조건   /구현X *시민 수가 랜덤이 아닌 고정되어있음
+// 3 - 4(보너스) 강화좀비로 변경, 1턴마다 움직임  / 전부 구현
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -36,8 +44,6 @@ int success = 4;
 int kPosition1, kPosition2;
 int prevKPosition, prevKPosition1, prevKPosition2;
 
-
-// 기차 상태 출력 함수
 void printPattern(int length) {
     for (int i = 0; i < length; i++) {
         printf("#");
@@ -45,7 +51,6 @@ void printPattern(int length) {
     printf("\n");
 }
 
-// 기차와 캐릭터 출력 함수
 void printPatternWithCharacters(int length, int cPos, int zPos, int mPos) {
     printPattern(length);
     for (int i = 0; i < length; i++) {
@@ -70,7 +75,6 @@ void printPatternWithCharacters(int length, int cPos, int zPos, int mPos) {
     printf("\n");
 }
 
-// 입력 버퍼를 비우는 함수
 void clearInputBuffer() {
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF);
@@ -87,8 +91,6 @@ void MAXMIN() {
     if (vAggro > AGGRO_MAX) vAggro = AGGRO_MAX;
 }
 
-
-// 게임 초기화 함수
 void initializeGame() {
     MAXMIN();
 
@@ -262,94 +264,78 @@ void moveCitizen() {
             }
  
     }
-    else { //4스테이지
-
-
+    else  { //4스테이지
         int moveProb = rand() % 100;
         if (bite == 0) {
-
-            if (bite == 1 ) {
             if (moveProb < (100 - PROB)) {
-                if (cPosition > 0) {
-                    cPosition--; // 왼쪽으로 1칸 이동  
-                    if (kPosition1 > 0) {
-                        kPosition1--;
-                    }
-                    if (kPosition2 > 0) {
-                        kPosition2--;
-                    }
-                }
+                cPosition--;
+                kPosition--;
+                kPosition1--;
+                kPosition2--;
+            }
+
+        }
+        else if (bite == 1) {
+            if (moveProb < (100 - PROB)) {
+                kPosition--;
+                kPosition1--;
+                kPosition2--;
             }
 
             if (moveProb < (PROB)) {
-                if (kPosition > 0) {
-                    kPosition--;
-                }
+                cPosition--;
             }
         }
+
+
         else if (bite == 2) {
             if (moveProb < (100 - PROB)) {
-                if (cPosition > 0) {
-                    cPosition--; // 왼쪽으로 1칸 이동  
 
-                    if (kPosition2 > 0) {
-                        kPosition2--;
-                    }
-                }
+                kPosition1--;
+                kPosition2--;
 
-                if (moveProb < (PROB)) {
-                    if (kPosition > 0) {
-                        kPosition--;
-                        if (kPosition1 > 0) {
-                            kPosition1--;
-                        }
-                    }
-                }
-            }
-        }
-        else if (bite == 3) {
-            if (moveProb < (100 - PROB)) {
-                if (cPosition > 0) {
-                    cPosition--; // 왼쪽으로 1칸 이동  
-                }
             }
 
             if (moveProb < (PROB)) {
-                if (kPosition > 0) {
-                    kPosition--;
-                }
-                    if (kPosition1 > 0) {
-                        kPosition1--;
-                    }
-                    if (kPosition2 > 0) {
-                        kPosition2--;
-                    }
-                }
+                cPosition--;
+                kPosition--;
             }
         }
+
+
+        else if (bite == 3) {
+            if (moveProb < (100 - PROB)) {
+
+
+                kPosition2--;
+
+            }
+
+            if (moveProb < (PROB)) {
+                cPosition--;
+                kPosition--;
+                kPosition1--;
+            }
+        }
+
+
         else {
             if (moveProb < (100 - PROB)) {
-                if (cPosition > 0) {
-                    cPosition--; // 왼쪽으로 1칸 이동  
-                    if (kPosition > 0) {
-                        kPosition--;
-                    }
-                    if (kPosition1 > 0) {
-                        kPosition1--;
-                    }
-                    if (kPosition2 > 0) {
-                        kPosition2--;
-                    }
-                }
+
+                kPosition2--;
+
+            }
+
+            if (moveProb < (PROB)) {
+                cPosition--;
+                kPosition--;
+                kPosition1--;
             }
         }
 
-
-
-    }
+        }
 }
 
-// 좀비 이동 함수
 void moveZombie() {
     if (zStunned == 1) {
         return;  
@@ -376,7 +362,6 @@ void moveZombie() {
     }
 }
 
-// M 이동 함수
 void moveM() {
 
     if (abs(mPosition - zPosition) == 1) {
@@ -417,12 +402,10 @@ void moveM() {
 
 }
 
-
 void performCAction() {
     //not thing
 }
 
-// 좀비 행동 처리 함수
 void performZAction() {
     if (abs(zPosition - cPosition) == 1 && abs(zPosition - mPosition) == 1) {
         if (cAggro >= mAggro) {
@@ -886,8 +869,6 @@ void initializeGameSECOND() {
 
 }
 
-
-
 void printPatternWithCharactersTHIRD(int length, int cPos, int stage, int bite, int zPos, int mPos, int kPos, int kPos1, int kPos2) {
     printPattern(length);
     for (int i = 0; i < length; i++) {
@@ -991,7 +972,6 @@ void initializeGameTHIRD() {
 
 
 }
-
 
 int cle, cle1 ,cle2, cle3, cle4;
 void cleclear(){ 
@@ -1173,7 +1153,7 @@ void printCActionResult() {
             printPatternWithCharactersTHIRD(LEN, cPosition, 4, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
 
             if (bite = !1) {
-                printf("SUCCESS!\ncitizen(s) escaped to the next train\n");
+                printf("SUCCESS!\ncitizen(s) escaped to the train\n");
             }
       
             success = 0;
@@ -1237,6 +1217,25 @@ void printCActionResult() {
     }
 }
 
+
+void ending() {
+    printf("\n\n\n");
+    printf(" ~:-     ::.   .~:::~.    ,::     -:-       ~::    .::-    ~:. -::   ::~     ~:,         ~:,    \n");
+    printf(" $@#,   ~@@   -$@@@@@$,   :@@     =@*       ;@@    ~@@=    @@: *@@   @@@.    #@!         #@;    \n");
+    printf("  @@~   @@:  -@@@=*#@@@   :@@     =@*        @@.   ;@@$.  :@#- *@@   @@@$    #@!         #@;    \n");
+    printf("  *@@  ;@#. .#@$.   -@@=  :@@     =@*        #@=   #@@@~  *@=  *@@   @@@@~   #@!         #@;    \n");
+    printf("  ,@@; $@!  :@@~     ;@@. :@@     =@*        ;@@   @$@@~  *@=  *@@   @@;@#.  #@!         #@;    \n");
+    printf("   !@#;@#.  ;@#      :@@: :@@     =@*        ~@@  ;@:*@! .$@:  *@@   @@.#@*  #@!         #@;    \n");
+    printf("   -#@$@!   !@#      ~@@! :@@     =@*        -@@: @@~.@@ -@@   *@@   @@.,#@~ #@!         #@;    \n");
+    printf("    $@@@    *@#      ~@@; :@@     =@*         =@* @#, @@ -@@   *@@   @@. !@$.#@!         #@;    \n");
+    printf("    .@@~    ;@#      :@@~ ~@@     =@*         *@*;@*  *@:;@:   *@@   @@.  $@;$@!         #@:    \n");
+    printf("     @@,    :@@:     *@@  .@@    ,#@!         :@$$@*  ~@##@    *@@   @@.  -@@#@!         ~:,    \n");
+    printf("     @@,     $@@,   ;@@:   @@$   :@@,          @@@@-  -@@@@    *@@   @@.   ~@@@!                \n");
+    printf("     @@,     ~#@@$=@@@=    !@@#=#@@=           @@@@   .$@@!    *@@   @@.   .$@@!        .#@;    \n");
+    printf("     @@,      -*@@@@@:.    .!@@@@@;            ;@@$    *@@~    *@@   @@.    -@@!        .#@;    \n");
+    printf("\n\n\n");
+
+}
 void stage1() {
     initializeGame(); 
 
@@ -1333,8 +1332,8 @@ void stage3() {
         moveCitizen(bite);
         moveZombie(bite);
         printPatternWithCharactersTHIRD(LEN, cPosition, 3, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
-        printCitizenMoveResult(prevCPosition, bite);
-        printZombieMoveResult(prevZPosition, bite);
+        printCitizenMoveResult(prevCPosition);
+        printZombieMoveResult(prevZPosition);
         CitizenBite(bite);
         printf("\n");
         moveM();
@@ -1346,10 +1345,10 @@ void stage3() {
         printCActionResult(bite);
         printZActionResult(bite);
         CitizenBite();
-        printf("%d citizen(s) alive(s)\n\n", people);
+        printf("\n%d citizen(s) alive(s)\n\n", people);
         if (bite == 4)
         {
-            printf("all citizens(s) dead...!\n\n");
+            printf("\nall citizens(s) dead...!\n\n");
             exit(0);
         }
         if (success == 0) {
@@ -1377,8 +1376,8 @@ void stage4() {
         moveCitizen(bite);
         moveZombie(bite);
         printPatternWithCharactersTHIRD(LEN, cPosition, 4, bite, zPosition, mPosition, kPosition, kPosition1, kPosition2);
-        printCitizenMoveResult(prevCPosition, bite);
-        printZombieMoveResult(prevZPosition, bite);
+        printCitizenMoveResult(prevCPosition);
+        printZombieMoveResult(prevZPosition);
         CitizenBite(bite);
         printf("\n");
         moveM();
@@ -1390,24 +1389,25 @@ void stage4() {
         printCActionResult(bite);
         printZActionResult(bite);
         CitizenBite();
-        printf("%d citizen(s) alive(s)\n\n", people);
+        printf("\n%d citizen(s) alive(s)\n\n", people);
         if (bite == 4)
         {
-            printf("all citizens(s) dead...!\n\n");
+            printf("\nall citizens(s) dead...!\n\n");
             exit(0);
         }
         if (success == 0) {
-            printf("Stage 4 Clear!\n\n");
-
-            zTurnCount = 0;
-            break; 
+            printf("\n\nStage 4 Clear!\nYOU WIN !\n");
+            Sleep(1000);
+            system("cls");
+            ending();
+            exit(0);
         }
         performMAction();
         printf("\n");
         zTurnCount++;
     }
 }
-// 메인 함수
+
 int main(void) {
     srand((unsigned int)time(NULL));
     stage1();
