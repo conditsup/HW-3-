@@ -19,9 +19,9 @@
 #define PROB_MAX 90
 #define AGGRO_MIN 1 // 어그로 범위
 #define AGGRO_MAX 5 
-#define MOVE_LEFT 1 // 이동 방향
+#define MOVE_LEFT 1 
 #define MOVE_STAY 0 
-#define ACTION_REST 0  // 행동
+#define ACTION_REST 0 
 #define ACTION_PROVOKE 1
 #define ACTION_PULL 2
 
@@ -30,11 +30,11 @@ int cPosition, vPosition, zPosition, mPosition, kPosition, zzPosition;
 int cAggro = 1,vAggro = 1, mAggro = 1;
 int zTurnCount = 0;
 int zStunned = 0;
-int mAction;  // M의 행동을 저장할 변수
+int mAction; 
 int zAction;
 int prevCPosition;
 int prevVPosition;
-int prevZPosition; // 이전 좀비의 위치를 저장하는 변수
+int prevZPosition;
 int change;
 int stage = 1;
 int changec = 1;
@@ -172,7 +172,7 @@ void moveCitizen() {
             int moveProb = rand() % 100;
             if (moveProb < (100 - PROB)) {
                 if (cPosition > 0) {
-                    cPosition--; // 왼쪽으로 1칸 이동  
+                    cPosition--; 
                     if (stage == 2) {
                         vPosition--;
                     }
@@ -180,7 +180,7 @@ void moveCitizen() {
             }
         }
     }
-    else if (stage == 3) { //3스테이지
+    else if (stage == 3) {
         int moveProb = rand() % 100;
         if (moveProb < (100 - PROB)) {
 
@@ -409,25 +409,25 @@ void performCAction() {
 void performZAction() {
     if (abs(zPosition - cPosition) == 1 && abs(zPosition - mPosition) == 1) {
         if (cAggro >= mAggro) {
-            zAction = 1;  // 좀비가 시민을 공격
+            zAction = 1; 
         }
         else {
-            zAction = 2;  // 좀비가 M을 공격
+            zAction = 2;  
         }
     }
     else if (abs(zPosition - cPosition) == 1) {
-        zAction = 1;  // 좀비가 시민을 공격
+        zAction = 1;  
 
     }
     else if (abs(zPosition - mPosition) == 1) {
         
-        zAction = 2;  // 좀비가 M을 공격
+        zAction = 2;  
     }
     else if (abs(zPosition - vPosition) == 1) {
-        zAction = 3;  // 좀비가 빌런을 공격
+        zAction = 3;  
     }
     else {
-        zAction = 0;  // 좀비가 아무것도 하지 않음
+        zAction = 0;  
     }
 }
 
@@ -847,9 +847,9 @@ void initializeGameSECOND() {
     zPosition = LEN - 3;
     mPosition = LEN - 2;
 
-    cAggro = 1; // 시민의 aggro 기본값
+    cAggro = 1; 
     vAggro = 1;
-    mAggro = 1; // M의 aggro 기본값
+    mAggro = 1; 
 
     printf("\n\n");
     if (changec == 1) {
@@ -1410,6 +1410,35 @@ void stage4() {
 
 int main(void) {
     srand((unsigned int)time(NULL));
+
+    printf("잠시후 기차가 출발합니다...\n\n");
+    printf("                                             --         .--         --,\n");
+    printf("       @@=       *@@.          ..      -@@,        ~@@.    @@@ @@#\n");
+    printf("       @@$       *@@.         :@@-     -@@,        ~@@.    @@@ @@#\n");
+    printf("       @@#,,,,,,,=@@.         :@@-     -@@,    @@@@@@@@@@@ @@@ @@#\n");
+    printf("       @@@@@@@@@@@@@.         :@@-     -@@,    @@@@@@@@@@@ @@@ @@#\n");
+    printf("       @@@@@@@@@@@@@.         *@@!     -@@,        ~::,    @@@ @@#\n");
+    printf("       @@$       *@@.         $@@$     -@@-      ;@@@@@#.  @@@ @@#\n");
+    printf("       @@$       *@@.         @@@@,    -@@@@@=  *@@@##@@@..@@@ @@#\n");
+    printf("       @@@@@@@@@@@@@.        @@@@@@    -@@@@@=  #@#   ,@@@@@@@ @@#\n");
+    printf("       @@@@@@@@@@@@@.       $@@:.@@@:  -@@:--,  @@;    @@@@@@@ @@#\n");
+    printf("       -------------      ,#@@!  -@@@#.-@@,     $@@; ,$@@- @@@ @@#\n");
+    printf("                         -@@@*    .#@* -@@,     -@@@@@@@$  @@@ @@#\n");
+    printf("    @@@@@@@@@@@@@@@@@@@.  -@*       !  -@@,      .=#@@$;   === @@#\n");
+    printf("    @@@@@@@@@@@@@@@@@@@.      ..       -@@,            .~=$$;. \n");
+    printf("    ........=@#........      !@@-      -@@,          !@@@@@@@@@$\n");
+    printf("            *@#              !@@-      ,$$,         $@@@#*:;$@@@@\n");
+    printf("            *@#              !@@-                  ,@@@.      !@@!\n");
+    printf("            *@#              !@@-                  ~@@,        @@@\n");
+    printf("            *@#              !@@;~~~~~~~~~~        .@@@-     ,*@@:\n");
+    printf("            *@#              !@@@@@@@@@@@@@         -@@@@@@@@@@@$\n");
+    printf("            *@#              !@@@@@@@@@@@@@          .@@@@@@@@@;\n");
+    printf("            ,-,                                        .-----,\n");
+    printf("\n\n\n");
+    printf("                                                               START...  \n\n");
+
+    Sleep(2000);
+    system("cls");
     stage1();
     stage2();
     stage3(); 
