@@ -11,13 +11,13 @@
 #include <windows.h>
 #include <time.h>
 
-#define LEN_MIN 15 // 기차 길이
+#define LEN_MIN 15 
 #define LEN_MAX 50
-#define STM_MIN 0 // M 체력
+#define STM_MIN 0 
 #define STM_MAX 5
-#define PROB_MIN 10 // 확률
+#define PROB_MIN 10 
 #define PROB_MAX 90
-#define AGGRO_MIN 1 // 어그로 범위
+#define AGGRO_MIN 1 
 #define AGGRO_MAX 5 
 #define MOVE_LEFT 1 
 #define MOVE_STAY 0 
@@ -108,7 +108,7 @@ void initializeGame() {
     }
 
     while (1) {
-        printf("M stamina(%d~%d)>> ", STM_MIN, STM_MAX);
+        printf("madongseok stamina(%d~%d)>> ", STM_MIN, STM_MAX);
         if (scanf_s("%d", &STM) != 1 || STM < STM_MIN || STM > STM_MAX) {
             int RESETSTM;
 
@@ -365,10 +365,10 @@ void moveZombie() {
 void moveM() {
 
     if (abs(mPosition - zPosition) == 1) {
-        printf("M's move (0: stay)>> ");
+        printf("madongseok move (0: stay)>> ");
         while (1) {
             if (scanf_s("%d", &mAction) != 1 || mAction != MOVE_STAY) {
-                printf("M's move (0: stay)>> ");
+                printf("madongseok move (0: stay)>> ");
                 clearInputBuffer();
             }
             else {
@@ -379,10 +379,10 @@ void moveM() {
         }
     }
     else {
-        printf("M's move (0: stay, 1: move left)>> ");
+        printf("madongseok move (0: stay, 1: move left)>> ");
         while (1) {
             if (scanf_s("%d", &mAction) != 1 || (mAction != MOVE_STAY && mAction != MOVE_LEFT)) {
-                printf("M's move (0: stay)>> ");
+                printf("madongseok move (0: stay)>> ");
                 clearInputBuffer();
             }
             else {
@@ -436,11 +436,11 @@ void performMAction() {
     int mAggrom = mAggro;
 
     if (abs(mPosition - zPosition) == 1) {
-        printf("M's action(0: rest, 1: provoke, 2: pull)>> ");
+        printf("madongseok action(0: rest, 1: provoke, 2: pull)>> ");
         while (1) {
             int choice;
             if (scanf_s("%d", &choice) != 1 || (choice < 0 || choice > 2)) {
-                printf("M's action(0: rest, 1: provoke, 2: pull)>> ");
+                printf("madongseok action(0: rest, 1: provoke, 2: pull)>> ");
                 clearInputBuffer();
           
             }
@@ -453,11 +453,11 @@ void performMAction() {
     }
     else {
        
-        printf("M's action(0: rest, 1: provoke)>> ");
+        printf("madongseok action(0: rest, 1: provoke)>> ");
         while (1) {
             int choice;
             if (scanf_s("%d", &choice) != 1 || (choice != ACTION_REST && choice != ACTION_PROVOKE)) {
-                printf("M's action(0: rest, 1: provoke, 2: pull)>> ");
+                printf("madongseok action(0: rest, 1: provoke, 2: pull)>> ");
                 clearInputBuffer();
 
             }
@@ -471,18 +471,18 @@ void performMAction() {
     printf("\n");
  
     if (mAction == ACTION_REST) {
-        printf("\nM's rests...\n");
+        printf("\nmadongseok rests...\n");
         STM++; 
         mAggro--; 
         MAXMIN();
-        printf("M's : %d (aggro: %d -> %d, stamina: %d -> %d)\n", mPosition, mAggrom, mAggro, STMa, STM);
+        printf("madongseok : %d (aggro: %d -> %d, stamina: %d -> %d)\n", mPosition, mAggrom, mAggro, STMa, STM);
 
     }
     else if (mAction == ACTION_PROVOKE) {
-        printf("\nM's provoked zombie...\n");
+        printf("\nmadongseok provoked zombie...\n");
         MAXMIN();
         int mAggrom = mAggro;
-        printf("M's : %d (aggro: %d -> %d, stamina: %d)\n", mPosition, mAggrom, mAggro = AGGRO_MAX, STM);
+        printf("madongseok : %d (aggro: %d -> %d, stamina: %d)\n", mPosition, mAggrom, mAggro = AGGRO_MAX, STM);
         mAggro = AGGRO_MAX;
     }
     else if (mAction == ACTION_PULL) {
@@ -494,13 +494,13 @@ void performMAction() {
         int pullSuccess = rand() % (100 - PROB); 
         if (pullSuccess) {
             zStunned = 1; 
-            printf("M's pulled zombie... Next turn, it can't move\n");
-            printf("M's : %d (aggro: %d -> %d, stamina: %d -> %d)\n", mPosition, mAggrom, mAggro, STMa, STM);
+            printf("madongseok pulled zombie... Next turn, it can't move\n");
+            printf("madongseok : %d (aggro: %d -> %d, stamina: %d -> %d)\n", mPosition, mAggrom, mAggro, STMa, STM);
         }
         else {
             zStunned = 0;
-            printf("M's failed to pull zombie\n");
-            printf("M's : %d (aggro: %d -> %d, stamina: %d -> %d)\n", mPosition, mAggrom, mAggro, STMa, STM);
+            printf("madongseok failed to pull zombie\n");
+            printf("madongseok : %d (aggro: %d -> %d, stamina: %d -> %d)\n", mPosition, mAggrom, mAggro, STMa, STM);
         }
 
     }
@@ -570,9 +570,9 @@ void printZActionResult() {
         else {
             STM--;
             MAXMIN();
-            printf("Zombie attacks M! (stamina: %d -> %d)\n", STMa, STM);
+            printf("Zombie attacks madongseok! (stamina: %d -> %d)\n", STMa, STM);
             if (STM == 0) {
-                printf("GAME OEVER! m dead...");
+                printf("GAME OEVER! madongseok dead...");
                 exit(0);
             }
         }
@@ -640,9 +640,9 @@ void printZActionResult() {
     else if (abs(zPosition - mPosition) == 1) {
         STM--;
         MAXMIN();
-        printf("Zombie attacks M! (stamina: %d -> %d)\n", STMa, STM);
+        printf("Zombie attacks madongseok! (stamina: %d -> %d)\n", STMa, STM);
         if (STM == 0) {
-            printf("GAME OEVER! m dead...");
+            printf("GAME OEVER! madongseok dead...");
             exit(0);
         }
     }
@@ -774,13 +774,13 @@ void printMMoveResult() {
     if (mAction == MOVE_LEFT && mPosition > 0) {
         mAggro++;
         MAXMIN();
-        printf("M's: %d -> %d (aggro: %d -> %d, stamina: %d)\n", mPosition + 1, mPosition, mAggrom, mAggro, STM);
+        printf("madongseok: %d -> %d (aggro: %d -> %d, stamina: %d)\n", mPosition + 1, mPosition, mAggrom, mAggro, STM);
 
     }
     else {
         mAggro--;
         MAXMIN();
-        printf("M's: stay %d (aggro: %d -> %d, stamina: %d)\n", mPosition, mAggrom, mAggro, STM);
+        printf("madongseok: stay %d (aggro: %d -> %d, stamina: %d)\n", mPosition, mAggrom, mAggro, STM);
 
     }
 }
@@ -1396,7 +1396,7 @@ void stage4() {
             exit(0);
         }
         if (success == 0) {
-            printf("\n\nStage 4 Clear!\nYOU WIN !\n");
+            printf("\n\nStage 4 Clear!\nYOU WIN !.... wait 1sec..\n");
             Sleep(1000);
             system("cls");
             ending();
